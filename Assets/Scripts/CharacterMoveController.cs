@@ -19,7 +19,7 @@ public class CharacterMoveController : MonoBehaviour
   [Header("Ground Raycast")]
   public float groundRaycastDistance;
   public LayerMask groundLayerMask;
-  private bool isOnGround;
+  private bool isOnGround = true;
 
   private void Start()
   {
@@ -32,7 +32,6 @@ public class CharacterMoveController : MonoBehaviour
   {
     if (Input.GetMouseButtonDown(0))
     {
-      Debug.Log("lompat " + isOnGround);
       if (isOnGround)
       {
         isJumping = true;
@@ -41,6 +40,7 @@ public class CharacterMoveController : MonoBehaviour
     }
 
     // change animation
+    Debug.Log("[isOnGround] " + isOnGround);
     anim.SetBool("isOnGround", isOnGround);
   }
 
@@ -50,8 +50,7 @@ public class CharacterMoveController : MonoBehaviour
 
     if (hit)
     {
-      Debug.Log("masuk");
-      if (!isOnGround && rig.velocity.y <= 0)
+      if (rig.velocity.y <= 1.5f)
       {
         isOnGround = true;
       }
@@ -59,10 +58,6 @@ public class CharacterMoveController : MonoBehaviour
       {
         isOnGround = false;
       }
-    }
-    else
-    {
-      Debug.Log("engga");
     }
 
     // calculate velocity vector
