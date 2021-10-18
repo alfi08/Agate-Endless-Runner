@@ -21,6 +21,12 @@ public class CharacterMoveController : MonoBehaviour
   public LayerMask groundLayerMask;
   private bool isOnGround = true;
 
+
+  [Header("Scoring")]
+  public ScoreController score;
+  public float scoringRatio;
+  private float lastPositionX;
+
   private void Start()
   {
     rig = GetComponent<Rigidbody2D>();
@@ -40,8 +46,17 @@ public class CharacterMoveController : MonoBehaviour
     }
 
     // change animation
-    Debug.Log("[isOnGround] " + isOnGround);
     anim.SetBool("isOnGround", isOnGround);
+
+    // calculate score
+    int distancePassed = Mathf.FloorToInt(transform.position.x - lastPositionX);
+    int scoreIncrement = Mathf.FloorToInt(distancePassed / scoringRatio);
+
+    if (scoreIncrement > 0)
+    {
+      score.IncreaseCurrentScore(scoreIncrement);
+      lastPositionX += distancePassed;
+    }
   }
 
   private void FixedUpdate()
